@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
     steps: 
     - uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
     
     - name: build with pyinstaller
       run: |
-        pyinstaller --onefile main.py
+        pyinstaller -F main.py
 
     - name: upload to release 
       uses: svenstaro/upload-release-action@v2
@@ -30,4 +30,57 @@ jobs:
         tag: ${{ github.ref }}
         overwrite: true
         file_glob: true
-      
+  
+  build-macos:
+    runs-on: macos-latest
+    steps: 
+    - uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9.7
+
+    - name: install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+    
+    - name: build with pyinstaller
+      run: |
+        pyinstaller -F main.py
+
+    - name: upload to release 
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/main
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps: 
+    - uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9.7
+
+    - name: install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+    
+    - name: build with pyinstaller
+      run: |
+        pyinstaller -F main.py
+
+    - name: upload to release 
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/main
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
