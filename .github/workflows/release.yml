@@ -57,7 +57,7 @@ jobs:
     - name: Rename MacOS
       run: |
         cd dist
-        mv main.exe HSVN-MacOS-tool
+        mv main HSVN-MacOS-tool
 
     - name: upload to release 
       uses: svenstaro/upload-release-action@v2
@@ -89,7 +89,7 @@ jobs:
     - name: Rename Linux
       run: |
         cd dist
-        mv main.exe HSVN-Linux-tool
+        mv main HSVN-Linux-tool
 
     - name: upload to release 
       uses: svenstaro/upload-release-action@v2
