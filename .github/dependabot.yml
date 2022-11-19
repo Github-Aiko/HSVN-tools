@@ -1,0 +1,46 @@
+version: 2
+updates:
+  # package-ecosystem for python
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    # labels for pull requests
+    labels:
+      - "dependencies"
+      - "automerge"
+    # assignees for pull requests
+    assignees:
+      - "dependabot[bot]"
+    # reviewers for pull requests
+    reviewers:
+      - "dependabot[bot]"
+    # ignore updates to dependencies with these labels
+    ignore:
+      - dependency-name: "django"
+        # labels for pull requests
+        labels:
+          - "dependencies"
+          - "automerge"
+        # assignees for pull requests
+        assignees:
+          - "dependabot[bot]"
+        # reviewers for pull requests
+        reviewers:
+          - "dependabot[bot]"
+      - dependency-name: "django"
+        # labels for pull requests
+        labels:
+          - "dependencies"
+          - "automerge"
+        # assignees for pull requests
+        assignees:
+          - "dependabot[bot]"
+        # reviewers for pull requests
+        reviewers:
+          - "dependabot[bot]"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"

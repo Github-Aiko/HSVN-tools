@@ -1,0 +1,54 @@
+name: Build Python Exe
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Python Exe
+      uses: eric2788/pyinstaller-build@master
+      with:
+        main: main
+        artifact: Program
+        use-dependencies: false
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: python
+        path: dist
+        
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Python Exe
+        uses: eric2788/pyinstaller-build@master
+        with:
+          main: main
+          artifact: Program
+          use-dependencies: false
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: HSVN-tools.exe
+          path: dist
+    
+  build_macos:
+    runs-on: macos-latest
+    steps:
+        - uses: actions/checkout@v2
+        - name: Build Python Exe
+          uses: eric2788/pyinstaller-build@master
+          with:
+            main: main
+            artifact: Program
+            use-dependencies: false
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: HSVN-tools
+            path: dist

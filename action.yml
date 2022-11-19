@@ -1,0 +1,55 @@
+name: 'PyInstaller Build'
+description: 'build your python program to executable'
+author: 'Eric Lam'
+branding:
+  icon: 'package'
+  color: 'gray-dark'
+
+inputs:
+  main:
+    description: 'the main python file (without .py)'
+    required: true
+  dist:
+    description: 'the dist path'
+    required: false
+    default: './dist'
+  python_version:
+    description: 'the version of python'
+    required: false
+    default: '3.9.7'
+  pyinstaller_version:
+    description: 'the version of pyinstaller'
+    required: false
+    default: '4.7'
+  artifact:
+    description: 'the output exe name'
+    required: false
+    default: 'main'
+  use-dependencies:
+    description: 'whether to install requirements.txt before build'
+    required: false
+  no-console:
+    description: 'whether to disppear console terminal'
+    required: false
+  icon:
+    description: 'add the icon mark into your executable, the file path of your ico'
+    required: false
+    default: 'NONE'
+
+runs:
+  using: "composite"
+  steps: 
+    - name: setup python 3.9.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ inputs.python_version }}
+    - name: build exe with pyinstaller
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip 
+        ${{ inputs.use-dependencies }} && pip install -r requirements.txt
+        ${{ inputs.no-console }} && NO_CONSOLE=--noconsole
+        [ ${{ inputs.icon }} != "NONE" ] && ICON=--icon=${{ inputs.icon }}.ico
+        pip install pyinstaller==${{ inputs.pyinstaller_version }}
+        pyinstaller --clean -y --dist ${{ inputs.dist }} $NO_CONSOLE $ICON --name ${{ inputs.artifact }} --onefile ${{ inputs.main }}.py
+        chown -R --reference=. ${{ inputs.dist }}
