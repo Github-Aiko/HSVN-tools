@@ -1,98 +1,83 @@
-name: Build Python
+name: Build
 
 on:
-  workflow_dispatch:
   push:
     tags:
-      - 'v*'
-    paths:
-      - ".github/workflows/*.yml"
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - ".github/workflows/*.yml"
-  release:
-    types: [published]
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
+
+  createrelease:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    - name: Output Release URL File
+      run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+    - name: Save Release URL File for publish
+      uses: actions/upload-artifact@v1
+      with:
+        name: release_url
+        path: release_url.txt
+
   build:
+    name: Build packages
+    needs: createrelease
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # Include amd64 on all platforms.
-        goos: [windows, linux, darwin]
-        goarch: [amd64, arm64]
         include:
-          - goos: linux
-            goarch: s390x
-          # END S390X
-          # END Other architectures
-      fail-fast: false
-
-    runs-on: ubuntu-latest
-    env:
-      GOOS: ${{ matrix.goos }}
-      GOARCH: ${{ matrix.goarch }}
-      GOARM: ${{ matrix.goarm }}
-      CGO_ENABLED: 0
+          - os: macos-latest
+            TARGET: macos
+            CMD_BUILD: >
+                pyinstaller -F -w -n HSVN-MacOS-tool main.py &&
+                cd dist/ &&
+                zip -r9 HSVN-MacOS-tool HSVN-MacOS-tool
+            OUT_FILE_NAME: HSVN-MacOS-tool.zip
+            ASSET_MIME: HSVN-MacOS-tool/zip
+          - os: windows-latest
+            TARGET: windows
+            CMD_BUILD: pyinstaller -F -w -n HSVN-Windows-tool main.py
+            OUT_FILE_NAME: HSVN-Windows-tool.zip
+            ASSET_MIME: HSVN-Windows-tool/zip
     steps:
-      - name: Checkout codebase
-        uses: actions/checkout@v3
-
-      - name: Show workflow information 
-        id: get_filename
-        run: |
-          export _NAME=$(jq ".[\"$GOOS-$GOARCH$GOARM$GOMIPS\"].friendlyName" -r < .github/build/friendly-filenames.json)
-          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, GOMIPS: $GOMIPS, RELEASE_NAME: $_NAME"
-          echo "::set-output name=ASSET_NAME::$_NAME"
-          echo "ASSET_NAME=$_NAME" >> $GITHUB_ENV
-
-      - name: setup python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9.7
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
-
-      - name: Build
-        run: |
-          pyinstaller --onefile --name ${{ env.ASSET_NAME }} main.py
-
-      - name: Rename Windows
-        if: matrix.goos == 'windows'
-        run: |
-          cd ./dist || exit 1
-          mv ${{ env.ASSET_NAME }} ${{ env.ASSET_NAME }}.exe
-
-      - name: Create ZIP archive
-        shell: bash
-        run: |
-          pushd dist || exit 1
-          touch -mt $(date +%Y01010000) *
-          zip -9vr ../HSVN-Tool-$ASSET_NAME.zip .
-          popd || exit 1
-          FILE=./HSVN-Tool-$ASSET_NAME.zip
-          DGST=$FILE.dgst
-          for METHOD in {"md5","sha1","sha256","sha512"}
-          do
-            openssl dgst -$METHOD $FILE | sed 's/([^)]*)//g' >>$DGST
-          done
-      - name: Change the name
-        run: |
-          mv dist HSVN-Tool-$ASSET_NAME
-      - name: Upload files to Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: HSVN-Tool-${{ steps.get_filename.outputs.ASSET_NAME }}
-          path: |
-            ./HSVN-Tool-${{ steps.get_filename.outputs.ASSET_NAME }}/*
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        if: github.event_name == 'release'
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./HSVN-Tool-${{ steps.get_filename.outputs.ASSET_NAME }}.zip*
-          tag: ${{ github.ref }}
-          file_glob: true
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Build with pyinstaller for ${{matrix.TARGET}}
+      run: ${{matrix.CMD_BUILD}}
+    - name: Load Release URL File from release job
+      uses: actions/download-artifact@v1
+      with:
+        name: release_url
+    - name: Get Release File Name & Upload URL
+      id: get_release_info
+      shell: bash
+      run: |
+        value=`cat release_url/release_url.txt`
+        echo ::set-output name=upload_url::$value
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        asset_path: ./dist/${{ matrix.OUT_FILE_NAME}}
+        asset_name: ${{ matrix.OUT_FILE_NAME}}
+        asset_content_type: ${{ matrix.ASSET_MIME}}
