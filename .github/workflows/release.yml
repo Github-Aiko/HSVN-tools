@@ -7,7 +7,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps: 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -34,7 +34,7 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps: 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: setup python
       uses: actions/setup-python@v2
       with:
@@ -61,7 +61,7 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps: 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: setup python
       uses: actions/setup-python@v2
       with:
