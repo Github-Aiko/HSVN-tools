@@ -95,8 +95,8 @@ def inputNumber():
 
 def main():
 	cleansc()
-	game()
-	#key()
+	#game()
+	key()
 	inputNumber()
 
 if __name__ == "__main__":
