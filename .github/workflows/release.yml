@@ -1,54 +1,24 @@
-name: Build Python Exe
+name: Build Python
 
 on:
   push:
     branches: [ main ]
-
 jobs:
-  build_linux:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build Python Exe
-      uses: eric2788/pyinstaller-build@master
-      with:
-        main: main
-        artifact: Program
-        use-dependencies: false
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: python
-        path: dist
-        
-  build_windows:
+  build:
     runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build Python Exe
-        uses: eric2788/pyinstaller-build@master
-        with:
-          main: main
-          artifact: Program
-          use-dependencies: false
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: HSVN-tools.exe
-          path: dist
+    steps: 
+    - uses: actions/checkout@v2
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9.7
+
+    - name: install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
     
-  build_macos:
-    runs-on: macos-latest
-    steps:
-        - uses: actions/checkout@v2
-        - name: Build Python Exe
-          uses: eric2788/pyinstaller-build@master
-          with:
-            main: main
-            artifact: Program
-            use-dependencies: false
-        - name: Upload Artifact
-          uses: actions/upload-artifact@v2
-          with:
-            name: HSVN-tools
-            path: dist
+    - name: build with pyinstaller
+      run: |
+        pyinstaller --onefile main.py
+      
