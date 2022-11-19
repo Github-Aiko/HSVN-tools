@@ -60,6 +60,12 @@ jobs:
         run: |
           pyinstaller --onefile --name ${{ env.ASSET_NAME }} main.py
 
+      - name: Rename Windows
+        if: matrix.goos == 'windows'
+        run: |
+          cd ./dist || exit 1
+          mv ${{ env.ASSET_NAME }} ${{ env.ASSET_NAME }}.exe
+
       - name: Create ZIP archive
         shell: bash
         run: |
