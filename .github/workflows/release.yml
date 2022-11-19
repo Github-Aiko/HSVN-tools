@@ -16,7 +16,7 @@ jobs:
         artifact: Program
         use-dependencies: false
     - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: python
         path: dist
@@ -32,7 +32,7 @@ jobs:
           artifact: Program
           use-dependencies: false
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: HSVN-tools.exe
           path: dist
@@ -48,7 +48,7 @@ jobs:
             artifact: Program
             use-dependencies: false
         - name: Upload Artifact
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3
           with:
             name: HSVN-tools
             path: dist
