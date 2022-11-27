@@ -27,7 +27,7 @@ def inputNumber():
 	print("8. Efi Newest")
 	print("9. Tham gia HSVN - Hackintosh Vietnam")
 	print("0. Exit")
-	textInput = input('Please enter a number: ')
+	textInput = int(input('Please enter a number: '))
 
 	if (textInput == 1):
 		monterey12_6_1()
