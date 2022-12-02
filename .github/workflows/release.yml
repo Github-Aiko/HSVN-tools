@@ -38,16 +38,17 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           mv dist/main dist/HSVN-Tools
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload files to Artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: HSVN-Tools-${{ matrix.os }}
           path: dist/
-      - name: Upload artifact to release
+      - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
+        if: github.event_name == 'release'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/
-          asset_name: HSVN-Tools-${{ matrix.os }}
+          name: HSVN-Tools-${{ matrix.os }}
+          file: dist/*
           tag: ${{ github.ref }}
-          overwrite: true
+          file_glob: true
