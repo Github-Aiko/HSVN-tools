@@ -30,9 +30,17 @@ jobs:
       - name: change name for windows
         if: matrix.os == 'windows-latest'
         run: |
-          mv dist/main.exe dist/main.exe
-      - name: Upload executable
+          mv dist/main.exe dist/HSVN-Tools.exe
+      - name: change name for macos
+        if: matrix.os == 'macos-latest'
+        run: |
+          mv dist/main dist/HSVN-Tools
+      - name: change name for linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          mv dist/main dist/HSVN-Tools
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: executable
-          path: dist/main
+          name: HSVN-Tools-${{ matrix.os }}
+          path: dist/
