@@ -43,3 +43,11 @@ jobs:
         with:
           name: HSVN-Tools-${{ matrix.os }}
           path: dist/
+      - name: Upload artifact to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/
+          asset_name: HSVN-Tools-${{ matrix.os }}
+          tag: ${{ github.ref }}
+          overwrite: true
