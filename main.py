@@ -1,11 +1,11 @@
 from app.system.systemcheck import cleansc
-import os
 import webbrowser
 from link.link import *
 import app.efi.dowloadefi as dowloadefi
 from app.key.key import key as key
 from app.game.minigame import game
 from app.system.systemcheck import *
+from app.environment.env import *
 
 
 
@@ -95,6 +95,7 @@ def inputNumber():
 
 def main():
 	cleansc()
+	checkwget()
 	#game()
 	key()
 	inputNumber()
