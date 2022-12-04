@@ -1,4 +1,4 @@
-name: Test Build Python Exe
+name: Build and Release
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Test Build Python Exe
+    - name: Build Python
       uses: eric2788/pyinstaller-build@master
       with:
         main: main
@@ -20,14 +20,24 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: python_exe
+        name: HSVN-Linux.zip
         path: dist
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
         
   build_windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Test Build Python Exe
+      - name: Build Python
         uses: eric2788/pyinstaller-build@master
         with:
           main: main
@@ -36,5 +46,15 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: python_exe
+          name: HSVN-Windows.zip
           path: dist
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
