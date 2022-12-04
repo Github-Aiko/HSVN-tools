@@ -1,4 +1,5 @@
 import platform
+import subprocess
 
 
 # check OS Windows , Linux , Mac and print it

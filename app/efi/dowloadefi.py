@@ -1,6 +1,4 @@
 from app.efi.getapiefi import *
-import os
-import requests
 from app.efi.getapiefi import *
 
 def efiopencore():
