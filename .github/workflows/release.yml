@@ -10,7 +10,7 @@ jobs:
   build_linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Build Python
       uses: eric2788/pyinstaller-build@master
       with:
@@ -36,7 +36,7 @@ jobs:
   build_windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build Python
         uses: eric2788/pyinstaller-build@master
         with:
