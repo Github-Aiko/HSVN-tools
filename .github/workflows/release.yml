@@ -4,6 +4,7 @@ name: Package Application with Pyinstaller
 on:
   push:
     tags:
+       - master
        - 'v*'
 
 jobs:
@@ -17,7 +18,7 @@ jobs:
         path: src
     - uses: actions/upload-artifact@v2
       with:
-        name: name-of-artifact
+        name: HSVN-Tools-Windows
         path: src/dist/windows
   build-linux:
     runs-on: ubuntu-latest
@@ -29,6 +30,17 @@ jobs:
         path: src
     - uses: actions/upload-artifact@v2
       with:
-        name: name-of-artifact
+        name: HSVN-Tools-Linux
         path: src/dist/linux
-  #build-macos:
+  build-macos:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Package Application
+      uses: JackMcKew/pyinstaller-action-macos@main
+      with:
+        path: src
+    - uses: actions/upload-artifact@v2
+      with:
+        name: HSVN-Tools-macOS
+        path: src/dist/macos
