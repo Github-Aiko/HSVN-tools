@@ -1,46 +1,40 @@
-
-name: Package Application with Pyinstaller
+name: Test Build Python Exe
 
 on:
   push:
-    tags:
-       - master
-       - 'v*'
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  build-windows:
+  build_linux:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Package Application
-      uses: JackMcKew/pyinstaller-action-windows@main
+    - name: Test Build Python Exe
+      uses: eric2788/pyinstaller-build@master
       with:
-        path: src
-    - uses: actions/upload-artifact@v2
+        main: main
+        artifact: Program
+        use-dependencies: false
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
       with:
-        name: HSVN-Tools-Windows
-        path: src/dist/windows
-  build-linux:
-    runs-on: ubuntu-latest
+        name: python_exe
+        path: dist
+        
+  build_windows:
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Package Application
-      uses: JackMcKew/pyinstaller-action-linux@main
-      with:
-        path: src
-    - uses: actions/upload-artifact@v2
-      with:
-        name: HSVN-Tools-Linux
-        path: src/dist/linux
-  build-macos:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Package Application
-      uses: JackMcKew/pyinstaller-action-macos@main
-      with:
-        path: src
-    - uses: actions/upload-artifact@v2
-      with:
-        name: HSVN-Tools-macOS
-        path: src/dist/macos
+      - uses: actions/checkout@v2
+      - name: Test Build Python Exe
+        uses: eric2788/pyinstaller-build@master
+        with:
+          main: main
+          artifact: Program
+          use-dependencies: false
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: python_exe
+          path: dist
