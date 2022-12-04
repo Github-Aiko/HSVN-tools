@@ -1,6 +1,5 @@
 import platform
 import subprocess
-import getpass as gt
 from app.system.systemcheck import check_brew, checkchoco
 
 # check wget if not install it 

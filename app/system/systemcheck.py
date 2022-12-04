@@ -1,5 +1,6 @@
 import platform
 import subprocess
+import getpass as gt
 
 def cleansc():
     print("\033c", end="")

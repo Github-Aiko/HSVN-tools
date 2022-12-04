@@ -1,6 +1,5 @@
-from os import system
 import subprocess
-from app.system.systemcheck import checkOS
+import platform
 
 def wget(url, patch):
     cmd = subprocess.call(["wget", url+"&download=1", "-O", patch])
@@ -24,9 +23,9 @@ def ventura13():
     wget("https://aikocute-my.sharepoint.com/:u:/g/personal/aiko_aikocute_onmicrosoft_com/ERdJvGDdRalChUf2UgHaTw8BPlh0V4SgQvZbPnH2sUzhDg?e=izPjZO", "macOS Ventura 13.0.0 (USB 16GB).dmg")
 
 def tools():
-    if checkOS() == "Darwin":
+    if platform.machine() == "Darwin":
         wget("https://aikocute-my.sharepoint.com/:u:/g/personal/aiko_aikocute_onmicrosoft_com/EUw0nZE6EohGlttwfe--N8YBtiaHESwaxeTfZR31qU7DCA?e=kBq6gC", "MacOS-Tools.zip")
-    elif checkOS() == "Linux":
+    elif platform.machine() == "Linux":
         wget("https://aikocute-my.sharepoint.com/:u:/g/personal/aiko_aikocute_onmicrosoft_com/EY12YmQAAZhFkfn0ptQzMy4B7YZ_JiTp6TNmR_xXKxbXFg?e=iuCpLu", "Linux-Tools.zip")
-    elif checkOS() == "Windows":
+    elif platform.machine() == "Windows":
         wget("https://aikocute-my.sharepoint.com/:u:/g/personal/aiko_aikocute_onmicrosoft_com/EcTPCZNbVZtDuZ8XPXz-i-QB3It5CMcsiO4pU7KAq5iLyw?e=fJNzJ5", "Windows-Tools.zip")

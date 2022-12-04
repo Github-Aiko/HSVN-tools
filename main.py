@@ -94,8 +94,8 @@ def inputNumber():
 
 
 def main():
-	cleansc()
 	checkwget()
+	cleansc()
 	#game()
 	key()
 	inputNumber()
