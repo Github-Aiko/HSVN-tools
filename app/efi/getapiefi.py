@@ -1,5 +1,8 @@
 import requests
 import subprocess
+from pathlib import Path
+
+downloads_path = str(Path.home() / "Downloads")
 
 # get api github
 def getApiGithub(url_link):
@@ -12,4 +15,4 @@ def getLatestVersion(url_link):
     return data["tag_name"]
 
 def wget(url, patch):
-    cmd = subprocess.call(["wget", url, "-O", patch])
+    cmd = subprocess.call(["wget", url, "-O", str(downloads_path)+"/"+patch])

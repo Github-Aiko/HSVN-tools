@@ -1,6 +1,8 @@
 import platform
 import subprocess
+import os
 from app.system.systemcheck import check_brew, checkchoco
+from pathlib import Path
 
 # check wget if not install it 
 def checkwget():
@@ -30,3 +32,6 @@ def checkwget():
 			cmd = subprocess.call(["choco", "install", "wget"])
 	else:
 		print("Can't find your OS")
+
+def opendownloads():
+	cmd = subprocess.call(["open", downloads_path])

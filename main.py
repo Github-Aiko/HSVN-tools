@@ -92,6 +92,16 @@ def inputNumber():
 		else:
 			inputNumber()
 
+def wantopenfile():
+	print("Do you want to open the folder?")
+	print("[1] Yes")
+	print("[2] No")
+	textInput = int(input('Please enter a number: '))
+	if (textInput == 1):
+		openfolder()
+		inputNumber()
+	else:
+		inputNumber()
 
 def main():
 	checkwget()
@@ -99,6 +109,7 @@ def main():
 	#game()
 	key()
 	inputNumber()
+	wantopenfile()
 
 if __name__ == "__main__":
 	try:

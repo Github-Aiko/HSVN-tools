@@ -1,8 +1,14 @@
 import subprocess
 import platform
+from pathlib import Path
 
-def wget(url, patch):
-    cmd = subprocess.call(["wget", url+"&download=1", "-O", patch])
+downloads_path = str(Path.home() / "Downloads")
+
+def wget(url, filename):
+    cmd = subprocess.call(["wget", url+"&download=1", "-O", str(downloads_path)+"/"+filename])
+
+def openfolder():
+	cmd = subprocess.call(["open", downloads_path])
 
 def monterey12_6_1():
     wget("https://aikocute-my.sharepoint.com/:u:/g/personal/aiko_aikocute_onmicrosoft_com/EXTteLmivBhKhA8Z_vaOA8sBFmhhRPZvBGykIHoOwTw_mQ?e=qmvVWd", "macOS Monterey 12.6.1 (USB 16GB).dmg")
