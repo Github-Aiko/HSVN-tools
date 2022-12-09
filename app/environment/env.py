@@ -1,6 +1,5 @@
 import platform
 import subprocess
-import os
 from app.system.systemcheck import check_brew, checkchoco
 from pathlib import Path
 
