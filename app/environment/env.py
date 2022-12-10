@@ -3,6 +3,8 @@ import subprocess
 from app.system.systemcheck import check_brew, checkchoco
 from pathlib import Path
 
+downloads_path = str(Path.home() / "Downloads")
+
 # check wget if not install it 
 def checkwget():
 	if platform.system() == "Linux":
@@ -32,5 +34,5 @@ def checkwget():
 	else:
 		print("Can't find your OS")
 
-def opendownloads():
+def openfolder():
 	cmd = subprocess.call(["open", downloads_path])

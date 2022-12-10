@@ -1,12 +1,17 @@
 from app.system.systemcheck import cleansc
 import webbrowser
-from link.link import *
 import app.efi.dowloadefi as dowloadefi
-from app.key.key import key as key
-from app.game.minigame import game
 from app.system.systemcheck import *
 from app.environment.env import *
+from link.tools import *
 
+# import OS
+from link.MacOS.monterey import monterey
+from link.MacOS.bigsur import bigsur
+from link.MacOS.catalina import catalina
+from link.MacOS.mojave import mojave
+from link.MacOS.hs import hs
+from link.MacOS.ventura import ventura
 
 
 def openLink():
@@ -30,24 +35,31 @@ def inputNumber():
 	textInput = int(input('Please enter a number: '))
 
 	if (textInput == 1):
-		monterey12_6_1()
+		cleansc()
+		monterey()
 	
 	elif (textInput == 2):
-		bigsur11_7()
+		cleansc()
+		bigsur()
 
 	elif (textInput == 3):
-		catalina10_15_7()
+		cleansc()
+		catalina()
 
 	elif (textInput == 4):
-		mojave10_14_6()
+		cleansc()
+		mojave()
 
 	elif (textInput == 5):
-		highsierra10_13_6()
+		cleansc()
+		hs()
 
 	elif (textInput == 6):
-		ventura13()
+		cleansc()
+		ventura()
 
 	elif (textInput == 7):
+		cleansc()
 		tools()
 
 	elif (textInput == 8):
@@ -93,6 +105,7 @@ def inputNumber():
 			inputNumber()
 
 def wantopenfile():
+	cleansc()
 	print("Do you want to open the folder?")
 	print("[1] Yes")
 	print("[2] No")
@@ -106,8 +119,6 @@ def wantopenfile():
 def main():
 	checkwget()
 	cleansc()
-	#game()
-	key()
 	inputNumber()
 	wantopenfile()
 
