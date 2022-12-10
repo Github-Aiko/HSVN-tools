@@ -1,9 +1,0 @@
-{
-    "darwin-amd64": { "friendlyName": "macos-intel" },
-    "darwin-arm64": { "friendlyName": "macos-apple-silicon" },
-    "linux-amd64": { "friendlyName": "linux-64" },
-    "linux-arm64": { "friendlyName": "linux-arm64" },
-    "linux-s390x": { "friendlyName": "linux-s390x" },
-    "windows-amd64": { "friendlyName": "windows-64" },
-    "windows-arm64": { "friendlyName": "windows-arm64" }
-}
