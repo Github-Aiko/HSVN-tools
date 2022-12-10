@@ -6,6 +6,7 @@ Write = Python
 Python  >= 3.8
 
 # install ENV for windows 
+Run powershell as admin
 ```
 $ScriptFromGitHub = Invoke-WebRequest https://raw.githubusercontent.com/Github-Aiko/HSVN-tools/dev/install.ps1
 Invoke-Expression $($ScriptFromGitHub.Content)
