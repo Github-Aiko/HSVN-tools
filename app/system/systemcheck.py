@@ -9,7 +9,7 @@ def cleansc():
 def check_brew():
 	if platform.system() == "Darwin":
 		# nếu là chip intel
-		if platform.machine() == "x86_64":
+		if platform.machine() == "arm64":
 			cmd = subprocess.call(["which", "brew"])
 			if cmd == 0:
 				print("brew is installed")
@@ -20,7 +20,7 @@ def check_brew():
 				cmd = subprocess.call(["echo", "'eval $(/opt/homebrew/bin/brew shellenv)'", ">>", "/Users/"+str(gt.getuser())+"/.zprofile"])
 				cmd = subprocess.call(["eval", "$(/opt/homebrew/bin/brew shellenv)"])
 		# nếu là chip m1
-		elif platform.machine() == "arm64":
+		elif platform.machine() == "x86_64":
 			cmd = subprocess.call(["which", "brew"])
 			if cmd == 0:
 				print("brew is installed")
