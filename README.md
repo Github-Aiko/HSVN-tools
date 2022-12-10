@@ -5,10 +5,8 @@ Write = Python
 # how to install python
 Python  >= 3.8
 
-# install ENV for windows
-```
-iex((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Github-Aiko/HSVN-tools/dev/install.ps1'))
-```
+# install ENV for windows 
+Run file install ps1 in source code
 
 ## Hướng dẫn cài
 ```
