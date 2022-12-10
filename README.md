@@ -6,7 +6,10 @@ Write = Python
 Python  >= 3.8
 
 # install ENV for windows 
-Run file install ps1 in source code
+```
+$ScriptFromGitHub = Invoke-WebRequest https://raw.githubusercontent.com/Github-Aiko/HSVN-tools/dev/install.ps1
+Invoke-Expression $($ScriptFromGitHub.Content)
+```
 
 ## Hướng dẫn cài
 ```

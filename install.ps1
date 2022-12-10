@@ -1,34 +1,15 @@
-# check if python is installed
-$python = Get-Command python -ErrorAction SilentlyContinue
-if ($python) {
-	Write-Host "Python is already installed"
-	exit
+$url = "https://www.python.org/ftp/python/3.11.0/python-3.11.0-amd64.exe"
+$output = "C:/tmp/python-3.11.0-amd64.exe"
+
+if (Test-Path $output) {
+    Write-Host "Script exists - skipping installation"
+    return;
 }
 
-# download python
-$python = Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.11.0/python-3.11.0-amd64.exe" -OutFile "python-3.11.0-amd64.exe"
+New-Item -ItemType Directory -Force -Path C:/tmp
 
-# install python
-Start-Process -FilePath "python-3.11.0-amd64.exe" -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -Wait
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Invoke-WebRequest -Uri $url -OutFile $output
 
-# check if python is installed
-$python = Get-Command python -ErrorAction SilentlyContinue
 
-if ($python) {
-	Write-Host "Python is installed"
-} else {
-	Write-Host "Python is not installed"
-}
-
-# remove python installer
-Remove-Item "python-3.11.0-amd64.exe"
-
-# install pip
-Start-Process -FilePath "python.exe" -ArgumentList "-m pip install --upgrade pip" -Wait
-
-# install python-tk, pyinstaller
-Start-Process -FilePath "python.exe" -ArgumentList "-m pip install python-tk pyinstaller pathlib wget" -Wait
-
-# install pyinstaller
-Start-Process -FilePath "python.exe" -ArgumentList "-m pip install pyinstaller" -Wait
-
+& $output /passive InstallAllUsers=1 PrependPath=1 Include_test=0 
