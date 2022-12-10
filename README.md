@@ -25,3 +25,5 @@ python3 hsvn.py
 ```
 pyinstaller --onefile hsvn.py
 ```
+
+- Build file 1 lần và chạy nhiều lần cho dù bạn có reset windows và mất môi trường còn file là còn chạy dc nhé :D 
