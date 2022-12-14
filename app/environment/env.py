@@ -12,9 +12,28 @@ def checkwget():
 		if cmd == 0:
 			print("wget is installed")
 		else:
-			print("wget is not installed")
-			cmd = subprocess.call(["sudo", "apt", "update"])
-			cmd = subprocess.call(["sudo", "apt", "install", "wget"])
+			# if centos
+			if platform.linux_distribution()[0] == "CentOS Linux":
+				cmd = subprocess.call(["yum", "update"])
+				cmd = subprocess.call(["yum", "install", "wget"])
+			# if ubuntu
+			elif platform.linux_distribution()[0] == "Ubuntu":
+				cmd = subprocess.call(["apt", "update"])
+				cmd = subprocess.call(["apt", "install", "wget"])
+			# if debian
+			elif platform.linux_distribution()[0] == "Debian GNU/Linux":
+				cmd = subprocess.call(["apt", "update"])
+				cmd = subprocess.call(["apt", "install", "wget"])
+			# if fedora
+			elif platform.linux_distribution()[0] == "Fedora":
+				cmd = subprocess.call(["dnf", "update"])
+				cmd = subprocess.call(["dnf", "install", "wget"])
+			# if arch
+			elif platform.linux_distribution()[0] == "Arch Linux":
+				cmd = subprocess.call(["pacman", "-Syu"])
+				cmd = subprocess.call(["pacman", "-S", "wget"])
+			else:
+				print("Can't find your OS")
 	elif platform.system() == "Darwin":
 		check_brew()
 		cmd = subprocess.call(["which", "wget"])
